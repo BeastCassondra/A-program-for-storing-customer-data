@@ -1,0 +1,51 @@
+import csv
+
+class Customer:
+    def __init__(self, name, email, phone):
+        self.name = name
+        self.email = email
+        self.phone = phone
+
+class CustomerDatabase:
+    def __init__(self, filename):
+        self.filename = filename
+        self.customers = []
+        self.load()
+
+    def load(self):
+        with open(self.filename, "r", newline="") as file:
+            reader = csv.reader(file)
+            for row in reader:
+                name, email, phone = row
+                customer = Customer(name, email, phone)
+                self.customers.append(customer)
+
+    def save(self):
+        with open(self.filename, "w", newline="") as file:
+            writer = csv.writer(file)
+            for customer in self.customers:
+                writer.writerow([customer.name, customer.email, customer.phone])
+
+    def add_customer(self, customer):
+        self.customers.append(customer)
+
+    def remove_customer(self, customer):
+        self.customers.remove(customer)
+
+    def find_customer_by_name(self, name):
+        for customer in self.customers:
+            if customer.name.lower() == name.lower():
+                return customer
+        return None
+
+    def find_customer_by_email(self, email):
+        for customer in self.customers:
+            if customer.email.lower() == email.lower():
+                return customer
+        return None
+
+    def find_customer_by_phone(self, phone):
+        for customer in self.customers:
+            if customer.phone == phone:
+                return customer
+        return None
